@@ -149,22 +149,35 @@ if(!title || !description || !prep_time || !user_id || !modo_preparo){
 
 //------------------------------------------------------------------------------------------------------------------------------------------------------
 
-//BUSCAR POR RECEITA QUE TENHA UM INGREDIENTE ESPECÍFICO
-//PROVÁVELMENRTE TEM QUE USAR O JOIN, AINDA NÃO SEI FAZER
+// BUSCAR POR RECEITA QUE TENHA UM INGREDIENTE ESPECÍFICO
+app.get('/recipes/ingredients/:ingredient', async (req: Request, res: Response): Promise<void> => {
+  const { ingredient } = req.params;
 
-app.get('/recipes/ingredients/:ingredients', async (req: Request, res: Response): Promise<void> => {
-  const { ingredients } = req.params;
-  
-  const newIngredients = req.body;
+  if (typeof ingredient !== 'string' || ingredient.trim() === '') {
+      res.status(400).json({ message: "Invalid ingredient" });
+      return;
+  }
+
   try {
-    const recipes = await connection('RECIPES')
-      .where('INGREDIENTS', 'ILIKE', `%${ingredients}%`);
+      const recipes = await connection('recipe_ingredient')
+          .join('recipes', 'recipe_ingredient.id_recipe', 'recipes.id_recipe')
+          .join('ingredients', 'recipe_ingredient.id_ingredient', 'ingredients.id_ingredient')
+          .where('ingredients.name_ingredient', 'ILIKE', `%${ingredient}%`)
+          .select('recipes.*');
 
-    res.status(200).json(recipes);
+      if (recipes.length === 0) {
+          res.status(404).json({ message: "No recipes found with the specified ingredient." });
+          return;
+      }
+
+      res.status(200).json(recipes);
   } catch (error) {
-    res.status(500).json({ message: 'Erro ao buscar receitas por ingrediente', error: (error as Error).message });
+      res.status(500).json({ message: 'Error fetching recipes by ingredient', error: (error as Error).message });
   }
 });
+
+
+
 
 //buscar receitas de um usuário específico
 //verificar se o nome foi inserido e se ele é do tipo string(ok)
@@ -215,7 +228,7 @@ app.get('/users', async (req: Request, res: Response): Promise<void> => {
       res.status(400).json({ message: 'no users found' })
       return
     }
-    res.json(users);
+    res.status(200).json(users);
   } catch (error) {
     res.status(404).json({ message: 'users not found' })
   }
@@ -362,6 +375,61 @@ app.put('/users/:id', async (req: Request, res: Response): Promise<void> => {
   }
 
 })
+
+//------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+//ENDPOINT DOS INGREDIENTES
+app.get('/ingredients', async (req: Request, res: Response): Promise<void> => {
+
+  try{
+
+    const ingredients = await connection.from('ingredients').select('*'); 
+
+    if(ingredients.length === 0){
+      res.status(404).json({message: " no ingredients found"})
+      return
+    }
+
+    res.status(200).json(ingredients)
+  }
+  catch(error){
+    res.status(404).json({message: "Error fetching ingredients"})
+  }
+})
+
+
+
+
+//criar receita
+//verificar se existe o nome e o type e se estão de acordo cmom o que foi pedido
+app.post('/ingredients', async (req: Request, res: Response): Promise<void> => {
+  const { name_ingredient, type_ingredient } = req.body;
+
+  if (!name_ingredient || typeof name_ingredient !== 'string' || name_ingredient.length > 50) {
+      res.status(400).json({ message: "Invalid name" });
+      return;
+  }
+
+  if (!type_ingredient || typeof type_ingredient !== 'string' || type_ingredient.length > 20) {
+      res.status(400).json({ message: "Invalid type" });
+      return;
+  }
+
+  try {
+      const gerarID = generateId();  
+
+      await connection('ingredients').insert({
+          id_ingredient: gerarID,
+          name_ingredient,
+          type_ingredient
+      });
+
+      res.status(201).json('Ingredient created successfully!');
+  } catch (error) {
+      res.status(500).json({ message: 'An unexpected error occurred' });
+  }
+});
+
+
 
 // Configurando o servidor para escutar na porta 3000
 app.listen(3000, () => {

@@ -116,16 +116,26 @@ app.post('/recipes', (req, res) => __awaiter(void 0, void 0, void 0, function* (
         res.status(500).json({ message: 'An unexpected error occurred' });
     }
 }));
-app.get('/recipes/ingredients/:ingredients', (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    const { ingredients } = req.params;
-    const newIngredients = req.body;
+app.get('/recipes/ingredients/:ingredient', (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    const { ingredient } = req.params;
+    if (typeof ingredient !== 'string' || ingredient.trim() === '') {
+        res.status(400).json({ message: "Invalid ingredient" });
+        return;
+    }
     try {
-        const recipes = yield connection('RECIPES')
-            .where('INGREDIENTS', 'ILIKE', `%${ingredients}%`);
+        const recipes = yield connection('recipe_ingredient')
+            .join('recipes', 'recipe_ingredient.id_recipe', 'recipes.id_recipe')
+            .join('ingredients', 'recipe_ingredient.id_ingredient', 'ingredients.id_ingredient')
+            .where('ingredients.name_ingredient', 'ILIKE', `%${ingredient}%`)
+            .select('recipes.*');
+        if (recipes.length === 0) {
+            res.status(404).json({ message: "No recipes found with the specified ingredient." });
+            return;
+        }
         res.status(200).json(recipes);
     }
     catch (error) {
-        res.status(500).json({ message: 'Erro ao buscar receitas por ingrediente', error: error.message });
+        res.status(500).json({ message: 'Error fetching recipes by ingredient', error: error.message });
     }
 }));
 app.get('/recipes/users/:username', (req, res) => __awaiter(void 0, void 0, void 0, function* () {
@@ -156,7 +166,7 @@ app.get('/users', (req, res) => __awaiter(void 0, void 0, void 0, function* () {
             res.status(400).json({ message: 'no users found' });
             return;
         }
-        res.json(users);
+        res.status(200).json(users);
     }
     catch (error) {
         res.status(404).json({ message: 'users not found' });
@@ -260,6 +270,42 @@ app.put('/users/:id', (req, res) => __awaiter(void 0, void 0, void 0, function* 
     }
     catch (error) {
         res.status(400).json({ message: "An error occurred while updating the user." });
+    }
+}));
+app.get('/ingredients', (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    try {
+        const ingredients = yield connection.from('ingredients').select('*');
+        if (ingredients.length === 0) {
+            res.status(404).json({ message: " no ingredients found" });
+            return;
+        }
+        res.status(200).json(ingredients);
+    }
+    catch (error) {
+        res.status(404).json({ message: "Error fetching ingredients" });
+    }
+}));
+app.post('/ingredients', (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    const { name_ingredient, type_ingredient } = req.body;
+    if (!name_ingredient || typeof name_ingredient !== 'string' || name_ingredient.length > 50) {
+        res.status(400).json({ message: "Invalid name" });
+        return;
+    }
+    if (!type_ingredient || typeof type_ingredient !== 'string' || type_ingredient.length > 20) {
+        res.status(400).json({ message: "Invalid type" });
+        return;
+    }
+    try {
+        const gerarID = (0, generatedId_1.generateId)();
+        yield connection('ingredients').insert({
+            id_ingredient: gerarID,
+            name_ingredient,
+            type_ingredient
+        });
+        res.status(201).json('Ingredient created successfully!');
+    }
+    catch (error) {
+        res.status(500).json({ message: 'An unexpected error occurred' });
     }
 }));
 app.listen(3000, () => {
