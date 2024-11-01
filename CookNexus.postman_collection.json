@@ -1,0 +1,432 @@
+{
+	"info": {
+		"_postman_id": "03ccd663-9d9c-4c0d-9d35-d3809b81b0d8",
+		"name": "CookNexus",
+		"description": "### //nome\n\nA API de Receitas foi desenvolvida como parte de um trabalho da disciplina de backend, servindo como uma ferramenta didática para entusiastas de programação e amantes da culinária. Seu design é intuitivo, facilitando a compreensão e manipulação de conceitos fundamentais de APIs.\n\n**Entidades Principais:**\n\n- **User**: Representa o perfil de cada usuário na API de Receitas, permitindo que criem, editem e excluam suas receitas, além de gerenciarem os ingredientes associados.\n    \n- **Recipes**: Reflete uma receita individual, incluindo detalhes como nome, instruções e tempo de preparo.\n    \n- **Ingredients**: Representa os componentes que podem ser usados nas receitas, permitindo a adição e remoção conforme necessário.",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "37745648"
+	},
+	"item": [
+		{
+			"name": "Recipes",
+			"item": [
+				{
+					"name": "Buscar todas as receitas",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:3000/recipes",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"recipes"
+							]
+						},
+						"description": "1. **Descrição:** Lista todas as receitas criadas.\n    \n2. **Resposta:** Apresenta todas as receitas ou mensagem de erro."
+					},
+					"response": []
+				},
+				{
+					"name": "Buscar receitas por título",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:3000/recipes/:title",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"recipes",
+								":title"
+							],
+							"variable": [
+								{
+									"key": "title",
+									"value": "Spaghetti Carbonara"
+								}
+							]
+						},
+						"description": "1. **Descrição:** Retorna detalhes de uma receita específica baseada no seu título.\n    \n2. **Parametrôs de entrada:** Título da receita.\n    \n3. **Resposta:** Detalhes da receitas ou mensagem de erro."
+					},
+					"response": []
+				},
+				{
+					"name": "Buscar receita com ingrediente específico",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:3000/recipes/ingredients/:ingredient",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"recipes",
+								"ingredients",
+								":ingredient"
+							],
+							"variable": [
+								{
+									"key": "ingredient",
+									"value": "Ovo"
+								}
+							]
+						},
+						"description": "1. **Descrição:** Busca receita por critério específico.\n    \n2. **Parametrôs de entrada:** Critérios de busca.\n    \n3. **Resposta:** Receitas que correspondem aos critérios ou mensagem de erro."
+					},
+					"response": []
+				},
+				{
+					"name": "Buscar receita de um usuário específico",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:3000/recipes/users/:username",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"recipes",
+								"users",
+								":username"
+							],
+							"variable": [
+								{
+									"key": "username",
+									"value": "Maria"
+								}
+							]
+						},
+						"description": "1. **Descrição:** Busca receitas de um usuário específico.\n    \n2. **Parametrôs de entrada:** nome do usuário.\n    \n3. **Resposta:** Receitas que correspondem aos usuário ou mensagem de erro."
+					},
+					"response": []
+				},
+				{
+					"name": "Criar receita",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"title\": \"cacarrão ao alho e óleo\",\r\n  \"description\": \"Receita simples e rápida de macarrão ao alho e óleo.\",\r\n  \"prep_time\": \"15\",\r\n  \"user_id\": \"U1\", \r\n  \"modo_preparo\": \"Cozinhe o macarrão, escorra e frite o alho no azeite.\"\r\n}\r\n",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:3000/recipes",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"recipes"
+							]
+						},
+						"description": "1. **Descrição:** Permite aos usuários criar uma nova receita.\n    \n2. **Parametrôs de entrada:** `Título` da receita, `descrição` , `tempo de preparo` e `ingredientes` presentes.\n    \n3. **Resposta:** Confirmação de que a playlist foi criada com sucesso ou mensagem de erro."
+					},
+					"response": []
+				},
+				{
+					"name": "Deletar receita",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:3000/recipes/:id_recipe",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"recipes",
+								":id_recipe"
+							],
+							"variable": [
+								{
+									"key": "id_recipe",
+									"value": "R3"
+								}
+							]
+						},
+						"description": "1. **Descrição:** Permite deletar uma receita. Requer confirmação de usuário.\n    \n2. **Parametrôs de entrada:** Título da receita.\n    \n3. **Resposta:** Confirmação ou mensagem de erro."
+					},
+					"response": []
+				},
+				{
+					"name": "Adicionar ingrediente em uma receita",
+					"request": {
+						"method": "PATCH",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:3000/recipes/:title/ingredients",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"recipes",
+								":title",
+								"ingredients"
+							],
+							"variable": [
+								{
+									"key": "title",
+									"value": ""
+								}
+							]
+						},
+						"description": "1. **Descrição:** Permite editar os detalhes de uma receita. Requer confirmação de usuário.\n    \n2. **Parametrôs de entrada:** Título da receita e detalhes atualizados.\n    \n3. **Resposta:** Confirmação ou mensagem de erro."
+					},
+					"response": []
+				},
+				{
+					"name": "Atualizar receita",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:3000/recipes/:id_recipe",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"recipes",
+								":id_recipe"
+							],
+							"variable": [
+								{
+									"key": "id_recipe",
+									"value": ""
+								}
+							]
+						},
+						"description": "1. **Descrição:** Atualiza uma receita. Requer confirmação de usuário.\n    \n2. **Parametrôs de entrada:** Título da receita.\n    \n3. **Resposta:** Confirmação ou mensagem de erro."
+					},
+					"response": []
+				}
+			],
+			"description": "A entidade \"Receitas\" oferece uma experiência culinária personalizada na API de Receitas. Cada receita pode ser criada, editada ou excluída, permitindo que os usuários gerenciem suas coleções de forma intuitiva. Os ingredientes podem ser facilmente adicionados ou removidos de cada receita, proporcionando flexibilidade na hora de cozinhar"
+		},
+		{
+			"name": "Ingredients",
+			"item": [
+				{
+					"name": "Adicionar ingrediente",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"name_ingredient\": \"Tomate\",\r\n    \"type_ingredient\": \"Vegetal\"\r\n}\r\n",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:3000/ingredients",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"ingredients"
+							]
+						},
+						"description": "1. **Descrição:** Permite aos usuários criar ingredientes.\n    \n2. **Parametrôs de entrada:** Detalhes do ingrediente como nome e tipo .\n    \n3. **Resposta:** Confirmação de que o ingrediente foi criado com sucesso ou mensagem de erro."
+					},
+					"response": []
+				},
+				{
+					"name": "Deletar ingrediente",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:3000/ingredients",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"ingredients"
+							]
+						},
+						"description": "1. **Descrição:** Permite aos usuários criar ingredientes.\n    \n2. **Parametrôs de entrada:** Nome ou ID do ingrediente\n    \n3. **Resposta:** Confirmação de que o ingrediente foi deltado com sucesso ou mensagem de erro."
+					},
+					"response": []
+				},
+				{
+					"name": "Buscar todos os ingredientes",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:3000/ingredients",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"ingredients"
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"description": "A entidade \"Ingredientes\" na API de Receitas representa os componentes que os usuários podem incluir em suas receitas, permitindo a criação de pratos deliciosos e personalizados. Os usuários podem facilmente adicionar, editar ou remover ingredientes de suas receitas, proporcionando flexibilidade e controle total sobre os elementos de cada receita."
+		},
+		{
+			"name": "User",
+			"item": [
+				{
+					"name": "Criar usuario",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"name_user\" : \"micael\",\r\n    \"sobrenome\" : \"ferrari\",\r\n    \"age\" : 21,\r\n    \"gender\" : \"male\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:3000/users",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"users"
+							]
+						},
+						"description": "1. **Descrição:** Permite a criação de novos usuários.\n    \n2. **Parametrôs de entrada:** Nome, idade e genero.\n    \n3. **Resposta:** Confirmação de que o usuário foi criado com sucesso ou mensagem de erro."
+					},
+					"response": []
+				},
+				{
+					"name": "Deletar usuário por ID",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:3000/users/:id",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"users",
+								":id"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": ""
+								}
+							]
+						},
+						"description": "1. **Descrição:** Permite deletar os perfis dos usuários.\n    \n2. **Parametrôs de entrada:s** ID do usuário.\n    \n3. **Resposta:** Confirmação de que o usuário foi deltado com sucesso ou mensagem de erro."
+					},
+					"response": []
+				},
+				{
+					"name": "Buscar todos os usuários",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:3000/users",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"users"
+							]
+						},
+						"description": "1. **Descrição:** Permite buscar todos usuários.\n    \n2. **Parametrôs de entrada:** Nome ou ID do usuário.\n    \n3. **Resposta:** Apresenta todos os usuários ou mensagem de erro."
+					},
+					"response": []
+				},
+				{
+					"name": "Atualizar usuário por id",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"name_user\": \"Raniele \",\r\n    \"age\": 21\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:3000/users/:id",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"users",
+								":id"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "U002"
+								}
+							]
+						},
+						"description": "1. **Descrição:** Permite atualizar um usuário específico.\n    \n2. **Parametrôs de entrada:** ID do usuário.\n    \n3. **Resposta:** Conformação ou mensagem de erro."
+					},
+					"response": []
+				}
+			],
+			"description": "A entidade \"User\" representa o perfil de cada usuário. Ela permite que os usuários criem, editem e excluam suas receitas e gerenciem os ingredientes associados. A interação com os endpoints dessa entidade proporciona uma experiência personalizada e facilita o controle sobre as criações culinárias."
+		}
+	]
+}
