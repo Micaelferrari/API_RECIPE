@@ -36,6 +36,22 @@ connection
   });
 
 // BUSCAR TODAS AS RECEITAS 
+
+/*
+//
+//
+//
+//
+//
+//
+É NOS DOIS (2) ENDPOINT DEBAIXO QUE PRECISA ADICIONAR O FILTRO E A ORDENAÇÃO 
+//'
+//
+//
+//
+//
+//'
+*/
 app.get("/recipes", async (req: Request, res: Response): Promise<void> => {
 
   //os valores vem como string, se converter antes com o number() não funciona
@@ -76,6 +92,10 @@ app.get("/recipes", async (req: Request, res: Response): Promise<void> => {
       .json({ message: error.message || "An unexpected error occurred" });
   }
 });
+
+
+
+
 
 // BUSCAR RECEITAS COM TÍTULO ESPECÍFICO
 app.get(
@@ -125,7 +145,22 @@ app.get(
       res.status(500).json({ message: error.message || "Error fetching recipes." });
     }
   }
-);
+);/*
+
+//
+//
+//
+//
+//
+É NOS DOIS ENDPOINTS DE CIMA QUE TEM QUE ADICIONAR OS FILTROS E A ORDENAÇÃO
+//
+//
+//
+//
+//
+//
+//
+*/
 
 
 // Rota para excluir receita por ID
