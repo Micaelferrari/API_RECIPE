@@ -7,8 +7,6 @@ import dotenv from 'dotenv';
 
 dotenv.config();
 
-
-
 // servidor
 const app = express();
 app.use(express.json());
@@ -37,21 +35,6 @@ connection
 
 // BUSCAR TODAS AS RECEITAS 
 
-/*
-//
-//
-//
-//
-//
-//
-É NOS DOIS (2) ENDPOINT DEBAIXO QUE PRECISA ADICIONAR O FILTRO E A ORDENAÇÃO 
-//'
-//
-//
-//
-//
-//'
-*/
 app.get("/recipes", async (req: Request, res: Response): Promise<void> => {
 
   //os valores vem como string, se converter antes com o number() não funciona
@@ -59,12 +42,12 @@ app.get("/recipes", async (req: Request, res: Response): Promise<void> => {
   const limitStr = req.query.limit; 
 
   if (pageStr !== undefined && (isNaN(Number(pageStr)) || Number(pageStr) < 1)) {
-     res.status(400).json({ message: "Page must be a positive integer." });
+     res.status(400).json({ message: "Page must be a positive number." });
      return
   }
 
   if (limitStr !== undefined && (isNaN(Number(limitStr)) || Number(limitStr) < 1)) {
-    res.status(400).json({ message: "Limit must be a positive integer." });
+    res.status(400).json({ message: "Limit must be a positive number." });
     return
   }
 
@@ -94,9 +77,6 @@ app.get("/recipes", async (req: Request, res: Response): Promise<void> => {
 });
 
 
-
-
-
 // BUSCAR RECEITAS COM TÍTULO ESPECÍFICO
 app.get(
   "/recipes/:title",
@@ -106,12 +86,12 @@ app.get(
     const limitStr = req.query.limit; 
 
     if (pageStr !== undefined && (isNaN(Number(pageStr)) || Number(pageStr) < 1)) {
-      res.status(400).json({ message: "Page must be a positive integer." });
+      res.status(400).json({ message: "Page must be a positive number." });
       return;
     }
 
     if (limitStr !== undefined && (isNaN(Number(limitStr)) || Number(limitStr) < 1)) {
-      res.status(400).json({ message: "Limit must be a positive integer." });
+      res.status(400).json({ message: "Limit must be a positive number." });
       return;
     }
 
@@ -145,23 +125,7 @@ app.get(
       res.status(500).json({ message: error.message || "Error fetching recipes." });
     }
   }
-);/*
-
-//
-//
-//
-//
-//
-É NOS DOIS ENDPOINTS DE CIMA QUE TEM QUE ADICIONAR OS FILTROS E A ORDENAÇÃO
-//
-//
-//
-//
-//
-//
-//
-*/
-
+);
 
 // Rota para excluir receita por ID
 app.delete(
@@ -237,12 +201,12 @@ app.get(
   const limitStr = req.query.limit; 
 
   if (pageStr !== undefined && (isNaN(Number(pageStr)) || Number(pageStr) < 1)) {
-     res.status(400).json({ message: "Page must be a positive integer." });
+     res.status(400).json({ message: "Page must be a positive number." });
      return
   }
 
   if (limitStr !== undefined && (isNaN(Number(limitStr)) || Number(limitStr) < 1)) {
-    res.status(400).json({ message: "Limit must be a positive integer." });
+    res.status(400).json({ message: "Limit must be a positive number." });
     return
   }
 
